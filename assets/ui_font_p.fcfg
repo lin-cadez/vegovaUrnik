@@ -1,0 +1,16 @@
+{
+  "codename": "p",
+  "ttf_path": "/assets/Montserrat-Medium.ttf",
+  "bin_path": "/assets\\ui_font_p.bin",
+  "c_path": "/assets\\ui_font_p.c",
+  "cfg_path": "/assets\\ui_font_p.fcfg",
+  "size": 15,
+  "bpp": 4,
+  "letters": 0,
+  "ranges": [
+    "0x20-0xff"
+  ],
+  "symbols": "ŠČĆŽĐ-.,žćčšđ",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}
