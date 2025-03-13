@@ -1,4 +1,4 @@
-# Projekt digitalizacije šolskega urnika z uporabo poceni dotik zaslonov
+# Projekt digitalizacije šolskega urnika z uporabo CYD
 
 ## Opis projekta
 Projekt se osredotoča na digitalizacijo šolskega urnika z uporabo poceni dotik zaslonov, ki omogočajo enostavno spremljanje sprememb urnika v realnem času. Zaslon je razvit v programskem jeziku **C** ob uporabi grafične knjižnice **LVGL**, kar omogoča visoko stopnjo prilagodljivosti in enostavno uporabo na napravah z omejenimi viri. 
