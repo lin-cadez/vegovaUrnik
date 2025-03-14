@@ -2,13 +2,6 @@
 #include <esp32_smartdisplay.h>
 #include <ui/ui.h>
 
-void OnAddOneClicked(lv_event_t *e)
-{
-    static uint32_t cnt = 0;
-    cnt++;
-    //lv_label_set_text_fmt(ui_lblCountValue, "%u", cnt);
-}
-
 void OnRotateClicked(lv_event_t *e)
 {
     auto disp = lv_disp_get_default();
@@ -49,7 +42,13 @@ ulong next_millis;
 auto lv_last_tick = millis();
 
 void loop()
-{
+{   
+
+
+    lv_label_set_text(ui_Label4,NULL);
+
+
+
     auto const now = millis();
     if (now > next_millis)
     {
@@ -58,16 +57,7 @@ void loop()
         char text_buffer[32];
         sprintf(text_buffer, "%lu", now);
 
-#ifdef BOARD_HAS_RGB_LED
-        auto const rgb = (now / 2000) % 8;
-        smartdisplay_led_set_rgb(rgb & 0x01, rgb & 0x02, rgb & 0x04);
-#endif
 
-#ifdef BOARD_HAS_CDS
-        auto cdr = analogReadMilliVolts(CDS);
-        sprintf(text_buffer, "%d", cdr);
-        lv_label_set_text(ui_lblCdrValue, text_buffer);
-#endif
     }
 
     // Update the ticker
