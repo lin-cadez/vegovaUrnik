@@ -28,6 +28,7 @@
     "backup_cnt": 29,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
+    "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
     "callfuncsexport": "C_FILE",
     "imageexport": "SOURCE",

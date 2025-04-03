@@ -28,7 +28,6 @@ void setup()
     __attribute__((unused)) auto disp = lv_disp_get_default();
     ui_init();
     lv_disp_set_rotation(disp, LV_DISPLAY_ROTATION_90);
-    Serial.println(LV_COLOR_16_SWAP);
 
 
 
@@ -45,21 +44,17 @@ void loop()
 {   
 
 
-    lv_label_set_text(ui_Label4,NULL);
+    lv_label_set_text(ui_Label4,"dfsdf");
+    lv_obj_set_style_bg_color(ui_circle1, lv_color_hex(0xFFFFFF00), LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
-
+    //NIKOLI NE ZBRIŠI!!!!!!
     auto const now = millis();
-    if (now > next_millis)
-    {
-        next_millis = now + 500;
-
-        char text_buffer[32];
-        sprintf(text_buffer, "%lu", now);
-
-
+    if (now < next_millis) {
+        delay(1);
+        return;
     }
-
+    
     // Update the ticker
     lv_tick_inc(now - lv_last_tick);
     lv_last_tick = now;
