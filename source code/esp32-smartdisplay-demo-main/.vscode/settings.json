@@ -1,9 +1,0 @@
-{
-    "cmake.ignoreCMakeListsMissing": true,
-    "files.associations": {
-        "*.tcc": "c",
-        "lv_lcd_generic_mipi.h": "c",
-        "lv_draw_sdl.h": "c",
-        "lv_opengles_debug.h": "c"
-    }
-}
