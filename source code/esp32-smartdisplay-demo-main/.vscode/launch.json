@@ -12,9 +12,9 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "C:/Users/HP/Documents/vegova urnik/source code/esp32-smartdisplay-demo-main/.pio/build/esp32-8048S070C/firmware.elf",
+            "executable": "/Users/maj/Documents/urnik/vegovaUrnik/source code/esp32-smartdisplay-demo-main/.pio/build/esp32-8048S070C/firmware.elf",
             "projectEnvName": "esp32-8048S070C",
-            "toolchainBinDir": "C:/.platformio/packages/toolchain-xtensa-esp32s3/bin",
+            "toolchainBinDir": "/Users/maj/.platformio/packages/toolchain-xtensa-esp32s3/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": {
                 "type": "PlatformIO",
@@ -25,18 +25,18 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "C:/Users/HP/Documents/vegova urnik/source code/esp32-smartdisplay-demo-main/.pio/build/esp32-8048S070C/firmware.elf",
+            "executable": "/Users/maj/Documents/urnik/vegovaUrnik/source code/esp32-smartdisplay-demo-main/.pio/build/esp32-8048S070C/firmware.elf",
             "projectEnvName": "esp32-8048S070C",
-            "toolchainBinDir": "C:/.platformio/packages/toolchain-xtensa-esp32s3/bin",
+            "toolchainBinDir": "/Users/maj/.platformio/packages/toolchain-xtensa-esp32s3/bin",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "C:/Users/HP/Documents/vegova urnik/source code/esp32-smartdisplay-demo-main/.pio/build/esp32-8048S070C/firmware.elf",
+            "executable": "/Users/maj/Documents/urnik/vegovaUrnik/source code/esp32-smartdisplay-demo-main/.pio/build/esp32-8048S070C/firmware.elf",
             "projectEnvName": "esp32-8048S070C",
-            "toolchainBinDir": "C:/.platformio/packages/toolchain-xtensa-esp32s3/bin",
+            "toolchainBinDir": "/Users/maj/.platformio/packages/toolchain-xtensa-esp32s3/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "loadMode": "manual"
         }
