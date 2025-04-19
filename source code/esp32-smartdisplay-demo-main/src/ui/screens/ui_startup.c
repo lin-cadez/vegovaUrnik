@@ -7,30 +7,43 @@
 
 void ui_startup_screen_init(void)
 {
-    ui_startup = lv_obj_create(NULL);
-    lv_obj_remove_flag(ui_startup, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_startup, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_startup, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_startup = lv_obj_create(NULL);
+lv_obj_remove_flag( ui_startup, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_bg_color(ui_startup, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_opa(ui_startup, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
-    ui_imageContainer = lv_image_create(ui_startup);
-    lv_obj_set_width(ui_imageContainer, lv_pct(100));
-    lv_obj_set_height(ui_imageContainer, lv_pct(100));
-    lv_obj_set_x(ui_imageContainer, -3);
-    lv_obj_set_y(ui_imageContainer, -25);
-    lv_obj_set_align(ui_imageContainer, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_imageContainer, LV_OBJ_FLAG_CLICKABLE);     /// Flags
-    lv_obj_remove_flag(ui_imageContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+ui_Label19 = lv_label_create(ui_startup);
+lv_obj_set_width( ui_Label19, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Label19, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_x( ui_Label19, 0 );
+lv_obj_set_y( ui_Label19, 355 );
+lv_obj_set_align( ui_Label19, LV_ALIGN_CENTER );
+lv_label_set_text(ui_Label19,"Izdelava: Lin Čadež, Maj Mohar");
+lv_obj_set_style_text_color(ui_Label19, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_text_opa(ui_Label19, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_font(ui_Label19, &ui_font_P1, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_bg_color(ui_Label19, lv_color_hex(0xF31616), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_opa(ui_Label19, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_opa(ui_Label19, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
 
-    ui_Label19 = lv_label_create(ui_startup);
-    lv_obj_set_width(ui_Label19, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label19, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Label19, 0);
-    lv_obj_set_y(ui_Label19, 429);
-    lv_obj_set_align(ui_Label19, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label19, "Izdelava: Lin Čadež, Maj Mohar");
-    lv_obj_set_style_text_color(ui_Label19, lv_color_hex(0x393F39), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_Label19, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_Label19, &ui_font_P1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_opa(ui_Label19, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_imageContainer = lv_image_create(ui_startup);
+lv_obj_set_width( ui_imageContainer, lv_pct(100));
+lv_obj_set_height( ui_imageContainer, lv_pct(100));
+lv_obj_set_x( ui_imageContainer, -4 );
+lv_obj_set_y( ui_imageContainer, -25 );
+lv_obj_set_align( ui_imageContainer, LV_ALIGN_CENTER );
+lv_obj_add_flag( ui_imageContainer, LV_OBJ_FLAG_CLICKABLE );   /// Flags
+lv_obj_remove_flag( ui_imageContainer, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+
+ui_Spinner1 = lv_spinner_create(ui_startup);
+//lv_spinner_set_anim_params(ui_Spinner1, 1000, 90);
+lv_obj_set_width( ui_Spinner1, 247);
+lv_obj_set_height( ui_Spinner1, 250);
+lv_obj_set_x( ui_Spinner1, -5 );
+lv_obj_set_y( ui_Spinner1, -23 );
+lv_obj_set_align( ui_Spinner1, LV_ALIGN_CENTER );
+lv_obj_set_flex_flow(ui_Spinner1,LV_FLEX_FLOW_ROW);
+lv_obj_set_flex_align(ui_Spinner1, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+lv_obj_remove_flag( ui_Spinner1, LV_OBJ_FLAG_CLICKABLE );    /// Flags
 
 }
