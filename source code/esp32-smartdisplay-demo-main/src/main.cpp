@@ -3,37 +3,41 @@
 #include <ui/ui.h>
 #include <WiFi.h>
 #include "time.h"
-
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 const char* ssid     = "Drop It Like It's HotSpot";
 const char* password = "krokituna";
 const char* st_ucilnice = "115";
 
+// za osveževanje urnika
+unsigned long lastRefresh = 0;
+const unsigned long refreshInterval = 2000; 
+
+String serverName = "http://nether.mojvegovc.si:3000";
+HTTPClient http;
+
 const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = 3600;  // adjust based on your timezone
-const int   daylightOffset_sec = 3600; // if you have daylight savings
+const long  gmtOffset_sec = 3600;
+const int   daylightOffset_sec = 3600;
 
-
-void updateDisplay();
-void initDisplay();
-void setText(lv_obj_t * obj, const char * text);
-
-
-void OnRotateClicked(lv_event_t *e)
-{
-    auto disp = lv_disp_get_default();
-    auto rotation = (lv_display_rotation_t)((lv_disp_get_rotation(disp) + 1) % (LV_DISPLAY_ROTATION_270 + 1));
-    lv_display_set_rotation(disp, rotation);
-
-}
-
-char buf[10]; //ura
-char buf2[10]; //datum
+char buf[16];
+char buf2[16];
+char buf3[16];
 ulong next_millis;
 auto lv_last_tick = millis();
 
-void setup()
-{
+TaskHandle_t displayTaskHandle;
+TaskHandle_t task2Handle;
+
+void updateDisplay();
+void Task2(void *parameter);
+void initDisplay();
+void setText(lv_obj_t * obj, const char * text);
+void updateDisplayTask(void* parameter);
+void refreshUrnik();
+
+void setup() {
 #ifdef ARDUINO_USB_CDC_ON_BOOT
     delay(5000);
 #endif
@@ -54,71 +58,169 @@ void setup()
     lv_label_set_text(ui_StUcilnice, st_ucilnice);
 
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-    Serial.print("Connecting to WiFi");
     lv_timer_handler();
-    initDisplay();
-    //core 1
-}
 
-boolean urnikSetup = true;
-void initDisplay(){
-    WiFi.begin(ssid, password);
-    while((WiFi.status() != WL_CONNECTED) && (urnikSetup)) {
+    //task damo na core 0, za updejtanje displaya
+    xTaskCreatePinnedToCore(
+        updateDisplayTask,    // Funkcija
+        "Display Task",       // Ime
+        8196,                 // Stack size
+        NULL,                 // Parameter
+        1,                    // Prioriteta
+        &displayTaskHandle,   // Task handle
+        0                     // Core 0
+    );
+    delay(100);
+    xTaskCreatePinnedToCore(
+        Task2,   // Funkcija
+        "Data Processing",    // Ime
+        8196,                 // Stack size (prilagodi po potrebi)
+        NULL,                 // Parameter
+        1,                    // Prioriteta
+        &task2Handle, // Task handle
+        1                     // Core 1
+    );
+    delay(100);
+    Serial.println("Data processing task created");
+}
+//osveževanje zaslona na core 0
+void updateDisplayTask(void* parameter) {
+    while (true) {
         updateDisplay();
+        delay(5);
     }
-    lv_screen_load(ui_main);
-    setText(ui_StUcilnice, st_ucilnice);
-
-    struct tm timeinfo;
-
-    sprintf(buf, "%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min);
-    String ura = String(buf);
-    sprintf(buf2, "%d.%02d", timeinfo.tm_mon, timeinfo.tm_mday);
-    String datum = String(buf2);
-
-    setText(ui_datum, datum.c_str());
-    setText(ui_TrenutniCas, ura.c_str());
-    
-}
-void setText(lv_obj_t * obj, const char * text){
-    lv_label_set_text(obj, text);
-    lv_obj_set_style_text_font(obj, &ui_font_H1, LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
-
-void updateDisplay(){
+//preloženo na core 0
+void updateDisplay() {
     auto const now = millis();
     if (now < next_millis) {
-        delay(1);
         return;
     }
-    
-    // Update the ticker
+
     lv_tick_inc(now - lv_last_tick);
     lv_last_tick = now;
-    // Update the UI
     lv_timer_handler();
 }
 
-void loop()
-{      
-    //core 1
-    struct tm timeinfo;
-    if(!getLocalTime(&timeinfo)){
-        Serial.println("Failed to obtain time");
-        return;
+// preloženo na core 1
+void Task2(void *parameter) {
+    initDisplay();
+    Serial.println("Task 2 started");
+    while(true){
+        loop();
     }
-    sprintf(buf, "%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min);
-    String ura = String(buf);
-    sprintf(buf2, "%d.%02d", timeinfo.tm_mon, timeinfo.tm_mday);
-    String datum = String(buf2);
-    //lv_label_set_text(ui_Label4,"dfsdf");
-    //lv_obj_set_style_bg_color(ui_circle1, lv_color_hex(0xFFFFFF00), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_label_set_text(ui_TrenutniCas, ura.c_str());
-    lv_obj_set_style_text_font(ui_TrenutniCas, &ui_font_H1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    
-    
+}
 
-    //NIKOLI NE ZBRIŠI!!!!!!
-    updateDisplay();
+bool urnikSetup = false;
+bool refreshed = false;
+void initDisplay() {
+    WiFi.begin(ssid, password);
+    while ((WiFi.status() != WL_CONNECTED)) {
+        delay(500);
+    }
+    
+    while (!urnikSetup) {
+        String serverPath = serverName + "/ucilnica/" + st_ucilnice;
+        http.begin(serverPath.c_str());
+        int httpResponseCode = http.GET();
+        if (httpResponseCode > 0) {
+            Serial.print("HTTP Response code: ");
+            Serial.println(httpResponseCode);
+            String payload = http.getString();
+            Serial.println("dobil sem");
+            urnikSetup = true;
+            http.end();
+        } else {
+            Serial.print("Error code: ");
+            Serial.println(httpResponseCode);
+        }
+    }
+    struct tm timeinfo;
+    while(!getLocalTime(&timeinfo)) {
+        Serial.println("Failed to obtain time");
+        sprintf(buf, "%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min);
+        sprintf(buf2, "%02d.%02d", timeinfo.tm_mday, timeinfo.tm_mon + 1);
+        
+        setText(ui_datum, buf2);
+        setText(ui_TrenutniCas, buf);    
+    }
+    Serial.println(buf2);
+    
+    lv_screen_load(ui_main);
+    setText(ui_StUcilnice, st_ucilnice);
+}
+
+void loop() {
+    unsigned long now = millis();
+    if (now - lastRefresh >= refreshInterval) {
+        lastRefresh = now;
+        refreshUrnik();
+        refreshed = false;
+  }
+    struct tm timeinfo;
+    if (!getLocalTime(&timeinfo)) {
+        Serial.println("Failed to obtain time");
+    }
+    
+    sprintf(buf, "%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min);
+    sprintf(buf2, "%02d.%02d", timeinfo.tm_mday, timeinfo.tm_mon + 1);
+    
+    setText(ui_TrenutniCas, buf);
+    setText(ui_datum, buf2);
+    
+    Serial.println(String(buf));
+    delay(500); // Zmanjšamo obremenitev core 1
+}
+
+void refreshUrnik(){
+    Serial.println("Refreshing urnik");
+    while (!refreshed) {
+        String serverPath = serverName + "/ucilnica/" + st_ucilnice;
+        http.begin(serverPath.c_str());
+        int httpResponseCode = http.GET();
+        if (httpResponseCode > 0) {
+            Serial.print("HTTP Response code: ");
+            Serial.println(httpResponseCode);
+            String payload = http.getString();
+            http.end();
+            
+            JsonDocument doc;
+            DeserializationError error = deserializeJson(doc, payload);
+            if (error) {
+                Serial.print("Deserialization failed: ");
+                Serial.println(error.f_str());
+                return;
+            }
+            refreshed = true;
+            JsonArray data = doc.as<JsonArray>();
+            for (JsonObject obj : data) {
+                const char* razred = obj["razred"].as<const char*>();
+                int ura = obj["ura"].as<int>();
+                const char* naziv = obj["naziv"].as<const char*>();
+                const char* profesor = obj["profesor"].as<const char*>();
+            
+                Serial.print("Razred: ");
+                Serial.print(razred);
+                Serial.print(", Ura: ");
+                Serial.print(ura);
+                Serial.print(", Predmet: ");
+                Serial.println(naziv);
+            
+                setText(ui_Predmet, naziv);
+                setText(ui_Profesor, profesor);
+            }
+
+            urnikSetup = true;
+        } else {
+            Serial.print("Error code: ");
+            Serial.println(httpResponseCode);
+        }
+        delay(100);
+    }
+}
+
+void setText(lv_obj_t * obj, const char * text) {
+    lv_label_set_text(obj, text);
+    lv_obj_set_style_text_font(obj, &ui_font_H1, LV_PART_MAIN | LV_STATE_DEFAULT);
 }
