@@ -13,6 +13,8 @@ extern "C" {
     #include "lvgl.h"
 
 #include "ui_helpers.h"
+#include "components/ui_comp.h"
+#include "components/ui_comp_hook.h"
 #include "ui_events.h"
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
@@ -30,18 +32,18 @@ extern lv_obj_t *ui_StUcilnice;
 extern lv_obj_t *ui_clockContainer2;
 extern lv_obj_t *ui_datum;
 extern lv_obj_t *ui_timetableContainer;
-extern lv_obj_t *ui_lessonBox;
-extern lv_obj_t *ui_infoContainer2;
-extern lv_obj_t *ui_circle2;
-extern lv_obj_t *ui_StUre;
-extern lv_obj_t *ui_moreInfoContainer2;
-extern lv_obj_t *ui_topInfo1;
-extern lv_obj_t *ui_Predmet;
-extern lv_obj_t *ui_Container1;
-extern lv_obj_t *ui_Razred;
-extern lv_obj_t *ui_Profesor;
-extern lv_obj_t *ui_Container3;
-extern lv_obj_t *ui_UraPredmeta;
+extern lv_obj_t *ui_lessonBox1;
+extern lv_obj_t *ui_infoContainer3;
+extern lv_obj_t *ui_circle3;
+extern lv_obj_t *ui_StUre2;
+extern lv_obj_t *ui_moreInfoContainer3;
+extern lv_obj_t *ui_topInfo2;
+extern lv_obj_t *ui_Predmet2;
+extern lv_obj_t *ui_Container4;
+extern lv_obj_t *ui_Razred1;
+extern lv_obj_t *ui_Profesor1;
+extern lv_obj_t *ui_Container5;
+extern lv_obj_t *ui_UraPredmeta2;
 extern lv_obj_t *ui_lessonBoxEmpty;
 extern lv_obj_t *ui_infoContainer1;
 extern lv_obj_t *ui_circle1;

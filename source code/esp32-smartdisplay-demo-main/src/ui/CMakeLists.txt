@@ -1,4 +1,6 @@
-SET(SOURCES screens/ui_main.c
+SET(SOURCES components/ui_comp_lessonbox.c
+    components/ui_comp.c
+    screens/ui_main.c
     screens/ui_startup.c
     ui_theme_manager.c
     ui_themes.c

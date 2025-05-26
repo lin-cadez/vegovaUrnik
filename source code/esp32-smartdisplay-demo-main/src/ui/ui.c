@@ -20,18 +20,18 @@ lv_obj_t *ui_StUcilnice;
 lv_obj_t *ui_clockContainer2;
 lv_obj_t *ui_datum;
 lv_obj_t *ui_timetableContainer;
-lv_obj_t *ui_lessonBox;
-lv_obj_t *ui_infoContainer2;
-lv_obj_t *ui_circle2;
-lv_obj_t *ui_StUre;
-lv_obj_t *ui_moreInfoContainer2;
-lv_obj_t *ui_topInfo1;
-lv_obj_t *ui_Predmet;
-lv_obj_t *ui_Container1;
-lv_obj_t *ui_Razred;
-lv_obj_t *ui_Profesor;
-lv_obj_t *ui_Container3;
-lv_obj_t *ui_UraPredmeta;
+lv_obj_t *ui_lessonBox1;
+lv_obj_t *ui_infoContainer3;
+lv_obj_t *ui_circle3;
+lv_obj_t *ui_StUre2;
+lv_obj_t *ui_moreInfoContainer3;
+lv_obj_t *ui_topInfo2;
+lv_obj_t *ui_Predmet2;
+lv_obj_t *ui_Container4;
+lv_obj_t *ui_Razred1;
+lv_obj_t *ui_Profesor1;
+lv_obj_t *ui_Container5;
+lv_obj_t *ui_UraPredmeta2;
 lv_obj_t *ui_lessonBoxEmpty;
 lv_obj_t *ui_infoContainer1;
 lv_obj_t *ui_circle1;
@@ -135,7 +135,8 @@ lv_anim_start(&PropertyAnimation_1);
 ///////////////////// SCREENS ////////////////////
 
 void ui_init( void )
-{
+{LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
+
 lv_disp_t *dispp = lv_display_get_default();
 lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), false, LV_FONT_DEFAULT);
 lv_disp_set_theme(dispp, theme);

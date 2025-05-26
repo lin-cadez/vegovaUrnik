@@ -36,7 +36,7 @@ void initDisplay();
 void setText(lv_obj_t * obj, const char * text);
 void updateDisplayTask(void* parameter);
 void refreshUrnik();
-
+lv_obj_t* createLessonBox(const char* subject, const char* teacher, uint8_t lessonNumber, const char* timeRange);
 void setup() {
 #ifdef ARDUINO_USB_CDC_ON_BOOT
     delay(5000);
@@ -64,7 +64,7 @@ void setup() {
     xTaskCreatePinnedToCore(
         updateDisplayTask,    // Funkcija
         "Display Task",       // Ime
-        8196,                 // Stack size
+        131072,                 // Stack size
         NULL,                 // Parameter
         1,                    // Prioriteta
         &displayTaskHandle,   // Task handle
@@ -74,7 +74,7 @@ void setup() {
     xTaskCreatePinnedToCore(
         Task2,   // Funkcija
         "Data Processing",    // Ime
-        8196,                 // Stack size (prilagodi po potrebi)
+        32768,                 // Stack size (prilagodi po potrebi)
         NULL,                 // Parameter
         1,                    // Prioriteta
         &task2Handle, // Task handle
@@ -85,11 +85,19 @@ void setup() {
 }
 //osveževanje zaslona na core 0
 void updateDisplayTask(void* parameter) {
+    const TickType_t xDelay = pdMS_TO_TICKS(5);
     while (true) {
-        updateDisplay();
-        delay(5);
+        uint32_t now = millis();
+        uint32_t elapsed = now - lv_last_tick;
+        lv_tick_inc(elapsed);
+        lv_last_tick = now;
+
+        lv_timer_handler();
+
+        vTaskDelay(xDelay);
     }
 }
+
 
 //preloženo na core 0
 void updateDisplay() {
@@ -116,9 +124,12 @@ bool urnikSetup = false;
 bool refreshed = false;
 void initDisplay() {
     WiFi.begin(ssid, password);
+    Serial.println("Connecting to WiFi...");
     while ((WiFi.status() != WL_CONNECTED)) {
         delay(500);
+        Serial.print(".");
     }
+    Serial.println();
     
     while (!urnikSetup) {
         String serverPath = serverName + "/ucilnica/" + st_ucilnice;
@@ -195,20 +206,12 @@ void refreshUrnik(){
             refreshed = true;
             JsonArray data = doc.as<JsonArray>();
             for (JsonObject obj : data) {
-                const char* razred = obj["razred"].as<const char*>();
-                int ura = obj["ura"].as<int>();
-                const char* naziv = obj["naziv"].as<const char*>();
-                const char* profesor = obj["profesor"].as<const char*>();
-            
-                Serial.print("Razred: ");
-                Serial.print(razred);
-                Serial.print(", Ura: ");
-                Serial.print(ura);
-                Serial.print(", Predmet: ");
-                Serial.println(naziv);
-            
-                setText(ui_Predmet, naziv);
-                setText(ui_Profesor, profesor);
+                createLessonBox(
+                    obj["predmet"],
+                    obj["ucitelj"],
+                    obj["st_ure"],
+                    obj["cas"]
+                );
             }
 
             urnikSetup = true;
@@ -223,4 +226,86 @@ void refreshUrnik(){
 void setText(lv_obj_t * obj, const char * text) {
     lv_label_set_text(obj, text);
     lv_obj_set_style_text_font(obj, &ui_font_H1, LV_PART_MAIN | LV_STATE_DEFAULT);
+}
+lv_obj_t* createLessonBox(const char* subject, const char* teacher, uint8_t lessonNumber, const char* timeRange) {
+    lv_obj_t* box = lv_obj_create(ui_timetableContainer);
+    lv_obj_remove_style_all(box);
+    lv_obj_set_size(box, lv_pct(100), 100);
+    lv_obj_set_pos(box, -186, -325);
+    lv_obj_set_flex_flow(box, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(box, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(box, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_remove_flag(box, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_bg_color(box, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(box, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_all(box, 25, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_t* infoContainer = lv_obj_create(box);
+    lv_obj_remove_style_all(infoContainer);
+    lv_obj_set_size(infoContainer, 200, 70);
+    lv_obj_set_align(infoContainer, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(infoContainer, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(infoContainer, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(infoContainer, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_remove_flag(infoContainer, LV_OBJ_FLAG_SCROLLABLE);
+
+    lv_obj_t* circle = lv_obj_create(infoContainer);
+    lv_obj_remove_style_all(circle);
+    lv_obj_set_size(circle, 40, 40);
+    lv_obj_set_align(circle, LV_ALIGN_CENTER);
+    lv_obj_add_state(circle, LV_STATE_CHECKED);
+    lv_obj_set_style_radius(circle, 1000, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(circle, lv_color_hex(0xF00), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(circle, 255, LV_PART_MAIN);
+
+    lv_obj_t* labelNum = lv_label_create(circle);
+    lv_label_set_text_fmt(labelNum, "%d", lessonNumber);
+    lv_obj_center(labelNum);
+    lv_obj_set_style_text_color(labelNum, lv_color_hex(0xFFFFFF), LV_PART_MAIN);
+    lv_obj_set_style_text_font(labelNum, &ui_font_h3, LV_PART_MAIN);
+
+    lv_obj_t* moreInfo = lv_obj_create(infoContainer);
+    lv_obj_remove_style_all(moreInfo);
+    lv_obj_set_size(moreInfo, 127, 65);
+    lv_obj_set_flex_flow(moreInfo, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(moreInfo, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_set_style_pad_row(moreInfo, 8, LV_PART_MAIN);
+
+    lv_obj_t* topInfo = lv_obj_create(moreInfo);
+    lv_obj_remove_style_all(topInfo);
+    lv_obj_set_size(topInfo, lv_pct(123), 34);
+    lv_obj_set_flex_flow(topInfo, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(topInfo, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_style_pad_column(topInfo, 10, LV_PART_MAIN);
+
+    lv_obj_t* subjectLabel = lv_label_create(topInfo);
+    lv_label_set_text(subjectLabel, subject);
+    lv_obj_set_style_text_color(subjectLabel, lv_color_hex(0xF00), LV_PART_MAIN);
+    lv_obj_set_style_text_font(subjectLabel, &ui_font_h3, LV_PART_MAIN);
+
+    lv_obj_t* gradeContainer = lv_obj_create(topInfo);
+    lv_obj_remove_style_all(gradeContainer);
+    lv_obj_set_style_radius(gradeContainer, 10, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(gradeContainer, lv_color_hex(0xF00), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(gradeContainer, 255, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(gradeContainer, 5, LV_PART_MAIN);
+
+    lv_obj_t* gradeLabel = lv_label_create(gradeContainer);
+    lv_label_set_text(gradeLabel, "G3A");
+    lv_obj_set_style_text_color(gradeLabel, lv_color_hex(0xFFFFFF), LV_PART_MAIN);
+    lv_obj_set_style_text_font(gradeLabel, &ui_font_P1, LV_PART_MAIN);
+
+    lv_obj_t* teacherLabel = lv_label_create(moreInfo);
+    lv_label_set_text(teacherLabel, teacher);
+    lv_obj_set_style_text_color(teacherLabel, lv_color_hex(0x777777), LV_PART_MAIN);
+    lv_obj_set_style_text_font(teacherLabel, &ui_font_p, LV_PART_MAIN);
+
+    lv_obj_t* timeContainer = lv_obj_create(box);
+    lv_obj_remove_style_all(timeContainer);
+
+    lv_obj_t* timeLabel = lv_label_create(timeContainer);
+    lv_label_set_text(timeLabel, timeRange);
+    lv_obj_set_style_text_font(timeLabel, &lv_font_montserrat_14, LV_PART_MAIN);
+
+    return box;
 }
