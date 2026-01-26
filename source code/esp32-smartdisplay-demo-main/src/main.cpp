@@ -16,15 +16,30 @@ const char *ntpServer = "de.pool.ntp.org";
 const long gmtOffset_sec = 3600;
 const int daylightOffset_sec = 3600;
 
+#define MAX_LESSONS 128
+#define STR_LEN 32
+
+struct UcnaUra {
+  int dan;
+  int ura;
+  char razred[STR_LEN];
+  char naziv[STR_LEN];
+  char profesor[STR_LEN];
+  char ucilnica[STR_LEN];
+  char posebnost[STR_LEN];
+};
+
 struct AppState
 {
-  JsonArray data;
   bool dirty;
   char time[9];
   char datum[11];
   boolean wifiConnected;
+  UcnaUra urnik[MAX_LESSONS];
+  int urnikCount;
 };
 
+AppState uiLvglState;
 AppState appState;
 SemaphoreHandle_t dataMutex;
 
@@ -48,6 +63,9 @@ void printNtpTime();
 void refreshDisplFunction(void *param);
 void otherLogic(void *param);
 void updateUrnik();
+void updateTimeFromRTC();
+void syncUiState();
+
 
 void setup()
 {
@@ -135,12 +153,13 @@ void setup()
 
   // show classroom number
   setText(ui_StUcilnice, st_ucilnice);
+  dataMutex = xSemaphoreCreateMutex();
 
   lv_timer_handler();
   xTaskCreatePinnedToCore(
       refreshDisplFunction, // task function
       "LVGL_Task",          // name
-      4096,                 // stack size
+      8196,                 // stack size
       NULL,                 // parameter
       1,                    // priority
       &refreshDispl,        // handle
@@ -164,6 +183,8 @@ void refreshDisplFunction(void *param)
   lv_screen_load(ui_main);
   setText(ui_StUcilnice, st_ucilnice);
   uint32_t lv_last_tick_local = millis();
+  updateUrnik();
+
   for (;;)
   {
     uint32_t now = millis();
@@ -171,16 +192,28 @@ void refreshDisplFunction(void *param)
     lv_last_tick_local = now;
     lv_timer_handler();
 
+    updateTimeFromRTC();
+    syncUiState();
+
     vTaskDelay(5 / portTICK_PERIOD_MS);
-    xSemaphoreTake(dataMutex, portMAX_DELAY);
-    if (appState.dirty)
+    if (uiLvglState.dirty)
     {
       updateUrnik();
-      
+      uiLvglState.dirty = false;
     }
-    xSemaphoreGive(dataMutex);
 
     vTaskDelay(pdMS_TO_TICKS(5));
+  }
+}
+void otherLogic(void *param)
+{
+  Serial.println("Starting otherLogic task");
+  initDisplay();
+  for (;;)
+  {
+        refreshUrnik();        // HTTP + JSON
+        updateTimeFromRTC();   // samo podatki
+        vTaskDelay(pdMS_TO_TICKS(60000));
   }
 }
 
@@ -194,6 +227,9 @@ void initDisplay()
     Serial.print('.');
   }
   Serial.println(" WiFi connected!");
+  xSemaphoreTake(dataMutex, portMAX_DELAY);
+  appState.wifiConnected = true;
+  xSemaphoreGive(dataMutex);
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   refreshUrnik();
   printNtpTime();
@@ -213,23 +249,32 @@ void refreshUrnik()
     return;
   }
 
-  Serial.printf("HTTP response: %d\n", code);
+  //Serial.printf("HTTP response: %d\n", code);
   String payload = http.getString();
-  Serial.println("Payload: " + payload);
+  //Serial.println("Payload: " + payload);
   http.end();
 
-  DynamicJsonDocument doc(4096);
-  auto err = deserializeJson(doc, payload);
-  if (err)
-  {
-    Serial.print("JSON err: ");
-    Serial.println(err.f_str());
-    return;
-  }
-  JsonArray data = doc.as<JsonArray>();
-  Serial.printf("Items: %u\n", data.size());
+  DynamicJsonDocument doc(8192);
+  if (deserializeJson(doc, payload)) return;
+
+  JsonArray arr = doc.as<JsonArray>();
+  appState.urnikCount = 0;
+
   xSemaphoreTake(dataMutex, portMAX_DELAY);
-  appState.data = data;
+  for (JsonObject o : arr) {
+    if (appState.urnikCount >= MAX_LESSONS) break;
+
+    UcnaUra &l = appState.urnik[appState.urnikCount++];
+
+    l.dan = o["dan"] | -1;
+    l.ura = o["ura"] | -1;
+
+    strlcpy(l.razred,   o["razred"]   | "", STR_LEN);
+    strlcpy(l.naziv,    o["naziv"]    | "", STR_LEN);
+    strlcpy(l.profesor, o["profesor"] | "", STR_LEN);
+    strlcpy(l.ucilnica, o["ucilnica"] | "", STR_LEN);
+    strlcpy(l.posebnost,o["posebnost"]| "", STR_LEN);
+  }
   appState.dirty = true;
   xSemaphoreGive(dataMutex);
 }
@@ -261,58 +306,79 @@ void printNtpTime()
     struct tm t;
     localtime_r(&now, &t);
     xSemaphoreTake(dataMutex, portMAX_DELAY);
-    strftime(appState.time, sizeof(appState.time), "%H:%M:%S", &t);
-    strftime(appState.datum, sizeof(appState.datum), "%Y-%m-%d", &t);
+    strftime(appState.time, sizeof(appState.time), "%H:%M", &t);
+    strftime(appState.datum, sizeof(appState.datum), "%d.%m.%Y", &t);
     appState.dirty = true;
 
     xSemaphoreGive(dataMutex);
   }
-  void updateUrnik(){
-    // koda
-      time_t t = time(nullptr);
-      struct tm tmbuf;
-      localtime_r(&t, &tmbuf);
-      int today = tmbuf.tm_wday; // Sun=0 … Sat=6
-      if (today == 0)
-        today = 7; // Sunday→7
-      today -= 1;  // shift→Mon=0…
-  
-      Serial.printf("Today index: %d\n", today);
-      bool hasLessonsToday = false;
-  
-      // clear/hide every slot first
-      for (int i = 0; i < 9; i++)
-      {
-        // hide container
+}
+void loop(){
+}
+void updateUrnik()
+{   
+    Serial.println("Updating urnik display…");
+    time_t t = time(nullptr);
+    struct tm tmbuf;
+    localtime_r(&t, &tmbuf);
+    int today = tmbuf.tm_wday; // Sun=0 … Sat=6
+    if (today == 0) today = 7; // Sunday→7
+    today -= 1; // shift→Mon=0…
+
+    Serial.printf("Today index: %d\n", today);
+
+    // clear/hide every slot first
+    for (int i = 0; i < 9; i++)
+    {
         lv_obj_add_flag(containers[i], LV_OBJ_FLAG_HIDDEN);
-        // set professor label to "Prazno"
         lv_label_set_text(profesor[i], "Prazno");
-        // clear others
         lv_label_set_text(razred[i], "");
         lv_label_set_text(predmet[i], "");
-      }
-      for (JsonObject obj : appState.data)
-      {
-        int dan = obj["dan"].as<int>();
-        int uraH = obj["ura"].as<int>();
-  
-        if (dan != today)
-          continue;
-        if (uraH < 0 || uraH > 14)
-          continue;
-  
-        hasLessonsToday = true;
-  
-        if (uraH < 9)
-        { // UI ima 9 slotov
-          int idx = uraH;
-  
-          lv_obj_clear_flag(containers[idx], LV_OBJ_FLAG_HIDDEN);
-          lv_label_set_text(ura[idx], String(uraH).c_str());
-          lv_label_set_text(razred[idx], obj["razred"] | "");
-          lv_label_set_text(predmet[idx], obj["naziv"] | "");
-          lv_label_set_text(profesor[idx], obj["profesor"] | "");
-        }
-      }
-  }
+    }
+
+    int count = uiLvglState.urnikCount;
+    lv_label_set_text(razred[0], String("Rba").c_str());
+
+    for (int i = 0; i < count; i++)
+    {
+        UcnaUra &l = uiLvglState.urnik[i];
+
+        if (l.dan != today) continue;
+        if (l.ura < 0 || l.ura >= 9) continue;
+
+        int idx = l.ura;
+
+        lv_obj_clear_flag(containers[idx], LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(ura[idx], String(l.ura).c_str());
+        lv_label_set_text(razred[idx], l.razred);
+        lv_label_set_text(predmet[idx], l.naziv);
+        lv_label_set_text(profesor[idx], l.profesor);
+        Serial.println("Updated slot " + String(idx) + " with lesson " + String(l.naziv));
+    }
 }
+
+void updateTimeFromRTC()
+{
+    time_t now = time(nullptr);
+    if (now < 100000) return; // čas še ni sinhroniziran
+
+    struct tm t;
+    localtime_r(&now, &t);
+
+    xSemaphoreTake(dataMutex, portMAX_DELAY);
+
+    strftime(appState.time, sizeof(appState.time), "%H:%M:%S", &t);
+    strftime(appState.datum, sizeof(appState.datum), "%d.%m", &t);
+    appState.dirty = true;
+
+    lv_label_set_text(ui_TrenutniCas, appState.time);
+    lv_label_set_text(ui_datum, appState.datum);
+    xSemaphoreGive(dataMutex);
+}
+
+void syncUiState() {
+    xSemaphoreTake(dataMutex, portMAX_DELAY);
+    uiLvglState = appState;
+    xSemaphoreGive(dataMutex);
+}
+
