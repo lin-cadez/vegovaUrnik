@@ -10,7 +10,6 @@ const char *ssid = "Wi Believe I Can Fi";
 const char *password = "mohar1aa";
 const char *st_ucilnice = "115";
 String serverName = "http://nether.mojvegovc.si:3000";
-HTTPClient http;
 
 const char *ntpServer = "de.pool.ntp.org";
 const long gmtOffset_sec = 3600;
@@ -169,7 +168,7 @@ void setup()
   xTaskCreatePinnedToCore(
       otherLogic,      // task function
       "Other_Logic",   // name
-      4096,            // stack size
+      16384,            // stack size
       NULL,            // parameter
       2,               // priority
       &otherLogicTask, // handle
@@ -179,30 +178,44 @@ void setup()
 
 void refreshDisplFunction(void *param)
 {
-  initDisplay();
-  lv_screen_load(ui_main);
-  setText(ui_StUcilnice, st_ucilnice);
+  lv_screen_load(ui_startup);
   uint32_t lv_last_tick_local = millis();
+  uint32_t lastUrnikRefresh = 0; // 0 forces immediate fetch on first run
   updateUrnik();
 
   for (;;)
   {
+    
     uint32_t now = millis();
     lv_tick_inc(now - lv_last_tick_local);
     lv_last_tick_local = now;
     lv_timer_handler();
-
     updateTimeFromRTC();
-    syncUiState();
 
-    vTaskDelay(5 / portTICK_PERIOD_MS);
-    if (uiLvglState.dirty)
+    if (appState.wifiConnected && lv_scr_act() == ui_startup)
     {
+      lv_screen_load(ui_main);
+      setText(ui_StUcilnice, st_ucilnice);
+      updateTimeFromRTC();
+      syncUiState();
       updateUrnik();
-      uiLvglState.dirty = false;
+      lastUrnikRefresh = millis();
     }
+    if (lv_scr_act() != ui_startup)
+    {
+      updateTimeFromRTC();
 
-    vTaskDelay(pdMS_TO_TICKS(5));
+      if (now - lastUrnikRefresh >= 30UL * 60UL * 1000UL)
+      {
+        refreshUrnik();
+        syncUiState();
+        updateUrnik();
+        lastUrnikRefresh = now;
+      }
+    }
+    
+
+    vTaskDelay(pdMS_TO_TICKS(33));
   }
 }
 void otherLogic(void *param)
@@ -212,6 +225,7 @@ void otherLogic(void *param)
   for (;;)
   {
         refreshUrnik();        // HTTP + JSON
+        syncUiState();
         updateTimeFromRTC();   // samo podatki
         vTaskDelay(pdMS_TO_TICKS(60000));
   }
@@ -231,14 +245,14 @@ void initDisplay()
   appState.wifiConnected = true;
   xSemaphoreGive(dataMutex);
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  refreshUrnik();
   printNtpTime();
+  refreshUrnik();
 }
 
 void refreshUrnik()
 {
   Serial.println("Refreshing urnik…");
-
+  HTTPClient http;
   String url = serverName + "/ucilnica/" + st_ucilnice;
   http.begin(url.c_str());
   int code = http.GET();
@@ -360,19 +374,15 @@ void updateUrnik()
 void updateTimeFromRTC()
 {
     time_t now = time(nullptr);
-    if (now < 100000) return; // čas še ni sinhroniziran
+    if (now < 100000) return;
 
     struct tm t;
     localtime_r(&now, &t);
 
     xSemaphoreTake(dataMutex, portMAX_DELAY);
-
     strftime(appState.time, sizeof(appState.time), "%H:%M:%S", &t);
     strftime(appState.datum, sizeof(appState.datum), "%d.%m", &t);
     appState.dirty = true;
-
-    lv_label_set_text(ui_TrenutniCas, appState.time);
-    lv_label_set_text(ui_datum, appState.datum);
     xSemaphoreGive(dataMutex);
 }
 
@@ -380,5 +390,8 @@ void syncUiState() {
     xSemaphoreTake(dataMutex, portMAX_DELAY);
     uiLvglState = appState;
     xSemaphoreGive(dataMutex);
+    
+    lv_label_set_text(ui_TrenutniCas, uiLvglState.time);
+    lv_label_set_text(ui_datum, uiLvglState.datum);
 }
 

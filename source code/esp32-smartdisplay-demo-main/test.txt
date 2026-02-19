@@ -1,0 +1,48 @@
+void refreshDisplFunction(void *param)
+{
+  // Don't call initDisplay() here — Core 1 handles WiFi
+  lv_screen_load(ui_startup);
+  uint32_t lv_last_tick_local = millis();
+  uint32_t lastUrnikRefresh = 0;
+
+  for (;;)
+  {
+    uint32_t now = millis();
+    lv_tick_inc(now - lv_last_tick_local);
+    lv_last_tick_local = now;
+    lv_timer_handler();   // <-- animation runs from here at 30fps
+
+    // Wait for Core 1 to finish init before switching screens
+    if (appState.wifiConnected && lv_scr_act() == ui_startup)
+    {
+      lv_screen_load(ui_main);
+      setText(ui_StUcilnice, st_ucilnice);
+      syncUiState();
+      updateUrnik();
+      lastUrnikRefresh = millis();
+    }
+
+    if (lv_scr_act() != ui_startup)
+    {
+      updateTimeFromRTC();
+      syncUiState();
+
+      if (now - lastUrnikRefresh >= 30UL * 60UL * 1000UL)
+      {
+        refreshUrnik();
+        syncUiState();
+        updateUrnik();
+        lastUrnikRefresh = now;
+      }
+      else if (uiLvglState.dirty)
+      {
+        updateUrnik();
+        xSemaphoreTake(dataMutex, portMAX_DELAY);
+        appState.dirty = false;
+        xSemaphoreGive(dataMutex);
+      }
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(33));  // 30fps
+  }
+}
