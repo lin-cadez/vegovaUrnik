@@ -103,15 +103,13 @@ ui_timetableContainer = lv_obj_create(ui_main);
 lv_obj_remove_style_all(ui_timetableContainer);
 lv_obj_set_width( ui_timetableContainer, lv_pct(100));
 lv_obj_set_height( ui_timetableContainer, lv_pct(90));
-lv_obj_set_x( ui_timetableContainer, -127 );
-lv_obj_set_y( ui_timetableContainer, -47 );
+lv_obj_set_x( ui_timetableContainer, -34 );
+lv_obj_set_y( ui_timetableContainer, 22 );
 lv_obj_set_align( ui_timetableContainer, LV_ALIGN_CENTER );
 lv_obj_set_flex_flow(ui_timetableContainer,LV_FLEX_FLOW_COLUMN);
 lv_obj_set_flex_align(ui_timetableContainer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-lv_obj_remove_flag( ui_timetableContainer, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN );    /// Flags
+lv_obj_remove_flag( ui_timetableContainer, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_GESTURE_BUBBLE | LV_OBJ_FLAG_SNAPPABLE | LV_OBJ_FLAG_SCROLL_ELASTIC | LV_OBJ_FLAG_SCROLL_MOMENTUM | LV_OBJ_FLAG_SCROLL_CHAIN );    /// Flags
 lv_obj_set_scrollbar_mode(ui_timetableContainer, LV_SCROLLBAR_MODE_OFF);
-lv_obj_set_scroll_dir(ui_timetableContainer, LV_DIR_VER);
-lv_obj_set_scroll_snap_y(ui_timetableContainer, LV_SCROLL_SNAP_START);
 
 ui_lessonBox = lv_obj_create(ui_timetableContainer);
 lv_obj_remove_style_all(ui_lessonBox);

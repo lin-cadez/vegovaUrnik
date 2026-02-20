@@ -14,7 +14,7 @@ extern "C" {
 extern void ui_startup_screen_init(void);
 extern void ui_startup_screen_destroy(void);
 extern lv_obj_t *ui_startup;
-extern lv_obj_t *ui_Label1;
+extern lv_obj_t *ui_textInfo;
 extern lv_obj_t *ui_Spinner1;
 // CUSTOM VARIABLES
 

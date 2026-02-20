@@ -5,7 +5,7 @@
 
 #include "../ui.h"
 
-lv_obj_t *ui_startup = NULL;lv_obj_t *ui_Label1 = NULL;lv_obj_t *ui_Spinner1 = NULL;
+lv_obj_t *ui_startup = NULL;lv_obj_t *ui_textInfo = NULL;lv_obj_t *ui_Spinner1 = NULL;
 // event funtions
 
 // build funtions
@@ -14,26 +14,24 @@ void ui_startup_screen_init(void)
 {
 ui_startup = lv_obj_create(NULL);
 lv_obj_remove_flag( ui_startup, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
-lv_obj_set_flex_flow(ui_startup,LV_FLEX_FLOW_ROW);
-lv_obj_set_flex_align(ui_startup, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 lv_obj_set_style_bg_color(ui_startup, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
 lv_obj_set_style_bg_opa(ui_startup, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
-ui_Label1 = lv_label_create(ui_startup);
-lv_obj_set_width( ui_Label1, LV_SIZE_CONTENT);  /// 1
-lv_obj_set_height( ui_Label1, LV_SIZE_CONTENT);   /// 1
-lv_obj_set_x( ui_Label1, -6 );
-lv_obj_set_y( ui_Label1, -16 );
-lv_obj_set_align( ui_Label1, LV_ALIGN_CENTER );
-lv_label_set_text(ui_Label1,"Povezovanje z omrežjem WIFI...");
-lv_obj_set_style_text_font(ui_Label1, &ui_font_h3, LV_PART_MAIN| LV_STATE_DEFAULT);
+ui_textInfo = lv_label_create(ui_startup);
+lv_obj_set_width( ui_textInfo, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_textInfo, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_x( ui_textInfo, -6 );
+lv_obj_set_y( ui_textInfo, -16 );
+lv_obj_set_align( ui_textInfo, LV_ALIGN_CENTER );
+lv_label_set_text(ui_textInfo,"Povezovanje z omrežjem WIFI...");
+lv_obj_set_style_text_font(ui_textInfo, &ui_font_h3, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_Spinner1 = lv_spinner_create(ui_startup);
 //lv_spinner_set_anim_params(ui_Spinner1, 1000, 90);
 lv_obj_set_width( ui_Spinner1, 80);
 lv_obj_set_height( ui_Spinner1, 80);
-lv_obj_set_x( ui_Spinner1, -708 );
-lv_obj_set_y( ui_Spinner1, 124 );
+lv_obj_set_x( ui_Spinner1, -24 );
+lv_obj_set_y( ui_Spinner1, 75 );
 lv_obj_set_align( ui_Spinner1, LV_ALIGN_CENTER );
 lv_obj_remove_flag( ui_Spinner1, LV_OBJ_FLAG_CLICKABLE );    /// Flags
 
@@ -45,7 +43,7 @@ void ui_startup_screen_destroy(void)
 
 // NULL screen variables
 ui_startup= NULL;
-ui_Label1= NULL;
+ui_textInfo= NULL;
 ui_Spinner1= NULL;
 
 }
