@@ -5,7 +5,7 @@
 
 #include "../ui.h"
 
-lv_obj_t *ui_main = NULL;lv_obj_t *ui_NavBar = NULL;lv_obj_t *ui_clockContainer1 = NULL;lv_obj_t *ui_TrenutniCas = NULL;lv_obj_t *ui_StUcilnice = NULL;lv_obj_t *ui_clockContainer2 = NULL;lv_obj_t *ui_datum = NULL;lv_obj_t *ui_timetableContainer = NULL;lv_obj_t *ui_lessonBox = NULL;lv_obj_t *ui_infoContainer2 = NULL;lv_obj_t *ui_circle2 = NULL;lv_obj_t *ui_StUre = NULL;lv_obj_t *ui_moreInfoContainer2 = NULL;lv_obj_t *ui_topInfo1 = NULL;lv_obj_t *ui_Predmet = NULL;lv_obj_t *ui_Container1 = NULL;lv_obj_t *ui_Razred = NULL;lv_obj_t *ui_Profesor = NULL;lv_obj_t *ui_Container3 = NULL;lv_obj_t *ui_UraPredmeta = NULL;lv_obj_t *ui_lessonBox1 = NULL;lv_obj_t *ui_infoContainer1 = NULL;lv_obj_t *ui_circle1 = NULL;lv_obj_t *ui_StUre1 = NULL;lv_obj_t *ui_moreInfoContainer1 = NULL;lv_obj_t *ui_topInfo2 = NULL;lv_obj_t *ui_Predmet1 = NULL;lv_obj_t *ui_Container2 = NULL;lv_obj_t *ui_Razred1 = NULL;lv_obj_t *ui_Profesor1 = NULL;lv_obj_t *ui_Container4 = NULL;lv_obj_t *ui_UraPredmeta1 = NULL;lv_obj_t *ui_lessonBox2 = NULL;lv_obj_t *ui_infoContainer3 = NULL;lv_obj_t *ui_circle3 = NULL;lv_obj_t *ui_StUre2 = NULL;lv_obj_t *ui_moreInfoContainer3 = NULL;lv_obj_t *ui_topInfo3 = NULL;lv_obj_t *ui_Predmet2 = NULL;lv_obj_t *ui_Container5 = NULL;lv_obj_t *ui_Razred2 = NULL;lv_obj_t *ui_Profesor2 = NULL;lv_obj_t *ui_Container6 = NULL;lv_obj_t *ui_UraPredmeta2 = NULL;lv_obj_t *ui_lessonBox3 = NULL;lv_obj_t *ui_infoContainer4 = NULL;lv_obj_t *ui_circle4 = NULL;lv_obj_t *ui_StUre3 = NULL;lv_obj_t *ui_moreInfoContainer4 = NULL;lv_obj_t *ui_topInfo4 = NULL;lv_obj_t *ui_Predmet3 = NULL;lv_obj_t *ui_Container7 = NULL;lv_obj_t *ui_Razred3 = NULL;lv_obj_t *ui_Profesor3 = NULL;lv_obj_t *ui_Container8 = NULL;lv_obj_t *ui_UraPredmeta3 = NULL;lv_obj_t *ui_lessonBox4 = NULL;lv_obj_t *ui_infoContainer5 = NULL;lv_obj_t *ui_circle5 = NULL;lv_obj_t *ui_StUre4 = NULL;lv_obj_t *ui_moreInfoContainer5 = NULL;lv_obj_t *ui_topInfo5 = NULL;lv_obj_t *ui_Predmet4 = NULL;lv_obj_t *ui_Container9 = NULL;lv_obj_t *ui_Razred4 = NULL;lv_obj_t *ui_Profesor4 = NULL;lv_obj_t *ui_Container10 = NULL;lv_obj_t *ui_UraPredmeta4 = NULL;lv_obj_t *ui_lessonBox5 = NULL;lv_obj_t *ui_infoContainer6 = NULL;lv_obj_t *ui_circle6 = NULL;lv_obj_t *ui_StUre5 = NULL;lv_obj_t *ui_moreInfoContainer6 = NULL;lv_obj_t *ui_topInfo6 = NULL;lv_obj_t *ui_Predmet5 = NULL;lv_obj_t *ui_Container11 = NULL;lv_obj_t *ui_Razred5 = NULL;lv_obj_t *ui_Profesor5 = NULL;lv_obj_t *ui_Container12 = NULL;lv_obj_t *ui_UraPredmeta5 = NULL;lv_obj_t *ui_lessonBox6 = NULL;lv_obj_t *ui_infoContainer7 = NULL;lv_obj_t *ui_circle7 = NULL;lv_obj_t *ui_StUre6 = NULL;lv_obj_t *ui_moreInfoContainer7 = NULL;lv_obj_t *ui_topInfo7 = NULL;lv_obj_t *ui_Predmet6 = NULL;lv_obj_t *ui_Container13 = NULL;lv_obj_t *ui_Razred6 = NULL;lv_obj_t *ui_Profesor6 = NULL;lv_obj_t *ui_Container14 = NULL;lv_obj_t *ui_UraPredmeta6 = NULL;lv_obj_t *ui_lessonBox7 = NULL;lv_obj_t *ui_infoContainer8 = NULL;lv_obj_t *ui_circle8 = NULL;lv_obj_t *ui_StUre7 = NULL;lv_obj_t *ui_moreInfoContainer8 = NULL;lv_obj_t *ui_topInfo8 = NULL;lv_obj_t *ui_Predmet7 = NULL;lv_obj_t *ui_Container15 = NULL;lv_obj_t *ui_Razred7 = NULL;lv_obj_t *ui_Profesor7 = NULL;lv_obj_t *ui_Container16 = NULL;lv_obj_t *ui_UraPredmeta7 = NULL;lv_obj_t *ui_lessonBox8 = NULL;lv_obj_t *ui_infoContainer9 = NULL;lv_obj_t *ui_circle9 = NULL;lv_obj_t *ui_StUre8 = NULL;lv_obj_t *ui_moreInfoContainer9 = NULL;lv_obj_t *ui_topInfo9 = NULL;lv_obj_t *ui_Predmet8 = NULL;lv_obj_t *ui_Container17 = NULL;lv_obj_t *ui_Razred8 = NULL;lv_obj_t *ui_Profesor8 = NULL;lv_obj_t *ui_Container18 = NULL;lv_obj_t *ui_UraPredmeta8 = NULL;
+lv_obj_t *ui_main = NULL;lv_obj_t *ui_NavBar = NULL;lv_obj_t *ui_clockContainer1 = NULL;lv_obj_t *ui_TrenutniCas = NULL;lv_obj_t *ui_StUcilnice = NULL;lv_obj_t *ui_clockContainer2 = NULL;lv_obj_t *ui_datum = NULL;lv_obj_t *ui_timetableContainer = NULL;lv_obj_t *ui_lessonBox = NULL;lv_obj_t *ui_infoContainer2 = NULL;lv_obj_t *ui_circle2 = NULL;lv_obj_t *ui_StUre = NULL;lv_obj_t *ui_moreInfoContainer2 = NULL;lv_obj_t *ui_topInfo1 = NULL;lv_obj_t *ui_Predmet = NULL;lv_obj_t *ui_Container1 = NULL;lv_obj_t *ui_Razred = NULL;lv_obj_t *ui_Profesor = NULL;lv_obj_t *ui_Container3 = NULL;lv_obj_t *ui_UraPredmeta = NULL;lv_obj_t *ui_lessonBox1 = NULL;lv_obj_t *ui_infoContainer1 = NULL;lv_obj_t *ui_circle1 = NULL;lv_obj_t *ui_StUre1 = NULL;lv_obj_t *ui_moreInfoContainer1 = NULL;lv_obj_t *ui_topInfo2 = NULL;lv_obj_t *ui_Predmet1 = NULL;lv_obj_t *ui_Container2 = NULL;lv_obj_t *ui_Razred1 = NULL;lv_obj_t *ui_Profesor1 = NULL;lv_obj_t *ui_Container4 = NULL;lv_obj_t *ui_UraPredmeta1 = NULL;lv_obj_t *ui_lessonBox2 = NULL;lv_obj_t *ui_infoContainer3 = NULL;lv_obj_t *ui_circle3 = NULL;lv_obj_t *ui_StUre2 = NULL;lv_obj_t *ui_moreInfoContainer3 = NULL;lv_obj_t *ui_topInfo3 = NULL;lv_obj_t *ui_Predmet2 = NULL;lv_obj_t *ui_Container5 = NULL;lv_obj_t *ui_Razred2 = NULL;lv_obj_t *ui_Profesor2 = NULL;lv_obj_t *ui_Container6 = NULL;lv_obj_t *ui_UraPredmeta2 = NULL;lv_obj_t *ui_lessonBox3 = NULL;lv_obj_t *ui_infoContainer4 = NULL;lv_obj_t *ui_circle4 = NULL;lv_obj_t *ui_StUre3 = NULL;lv_obj_t *ui_moreInfoContainer4 = NULL;lv_obj_t *ui_topInfo4 = NULL;lv_obj_t *ui_Predmet3 = NULL;lv_obj_t *ui_Container7 = NULL;lv_obj_t *ui_Razred3 = NULL;lv_obj_t *ui_Profesor3 = NULL;lv_obj_t *ui_Container8 = NULL;lv_obj_t *ui_UraPredmeta3 = NULL;lv_obj_t *ui_lessonBox4 = NULL;lv_obj_t *ui_infoContainer5 = NULL;lv_obj_t *ui_circle5 = NULL;lv_obj_t *ui_StUre4 = NULL;lv_obj_t *ui_moreInfoContainer5 = NULL;lv_obj_t *ui_topInfo5 = NULL;lv_obj_t *ui_Predmet4 = NULL;lv_obj_t *ui_Container9 = NULL;lv_obj_t *ui_Razred4 = NULL;lv_obj_t *ui_Profesor4 = NULL;lv_obj_t *ui_Container10 = NULL;lv_obj_t *ui_UraPredmeta4 = NULL;lv_obj_t *ui_lessonBox5 = NULL;lv_obj_t *ui_infoContainer6 = NULL;lv_obj_t *ui_circle6 = NULL;lv_obj_t *ui_StUre5 = NULL;lv_obj_t *ui_moreInfoContainer6 = NULL;lv_obj_t *ui_topInfo6 = NULL;lv_obj_t *ui_Predmet5 = NULL;lv_obj_t *ui_Container11 = NULL;lv_obj_t *ui_Razred5 = NULL;lv_obj_t *ui_Profesor5 = NULL;lv_obj_t *ui_Container12 = NULL;lv_obj_t *ui_UraPredmeta5 = NULL;lv_obj_t *ui_lessonBox6 = NULL;lv_obj_t *ui_infoContainer7 = NULL;lv_obj_t *ui_circle7 = NULL;lv_obj_t *ui_StUre6 = NULL;lv_obj_t *ui_moreInfoContainer7 = NULL;lv_obj_t *ui_topInfo7 = NULL;lv_obj_t *ui_Predmet6 = NULL;lv_obj_t *ui_Container13 = NULL;lv_obj_t *ui_Razred6 = NULL;lv_obj_t *ui_Profesor6 = NULL;lv_obj_t *ui_Container14 = NULL;lv_obj_t *ui_UraPredmeta6 = NULL;lv_obj_t *ui_lessonBox7 = NULL;lv_obj_t *ui_infoContainer8 = NULL;lv_obj_t *ui_circle8 = NULL;lv_obj_t *ui_StUre7 = NULL;lv_obj_t *ui_moreInfoContainer8 = NULL;lv_obj_t *ui_topInfo8 = NULL;lv_obj_t *ui_Predmet7 = NULL;lv_obj_t *ui_Container15 = NULL;lv_obj_t *ui_Razred7 = NULL;lv_obj_t *ui_Profesor7 = NULL;lv_obj_t *ui_Container16 = NULL;lv_obj_t *ui_UraPredmeta7 = NULL;lv_obj_t *ui_lessonBox8 = NULL;lv_obj_t *ui_infoContainer9 = NULL;lv_obj_t *ui_circle9 = NULL;lv_obj_t *ui_StUre8 = NULL;lv_obj_t *ui_moreInfoContainer9 = NULL;lv_obj_t *ui_topInfo9 = NULL;lv_obj_t *ui_Predmet8 = NULL;lv_obj_t *ui_Container17 = NULL;lv_obj_t *ui_Razred8 = NULL;lv_obj_t *ui_Profesor8 = NULL;lv_obj_t *ui_Container18 = NULL;lv_obj_t *ui_UraPredmeta8 = NULL;lv_obj_t *ui_lessonBox9 = NULL;lv_obj_t *ui_infoContainer10 = NULL;lv_obj_t *ui_circle10 = NULL;lv_obj_t *ui_StUre9 = NULL;lv_obj_t *ui_moreInfoContainer10 = NULL;lv_obj_t *ui_topInfo10 = NULL;lv_obj_t *ui_Predmet9 = NULL;lv_obj_t *ui_Container19 = NULL;lv_obj_t *ui_Razred9 = NULL;lv_obj_t *ui_Profesor9 = NULL;lv_obj_t *ui_Container20 = NULL;lv_obj_t *ui_UraPredmeta9 = NULL;
 // event funtions
 
 // build funtions
@@ -1264,6 +1264,134 @@ lv_obj_set_style_text_letter_space(ui_UraPredmeta8, 2, LV_PART_MAIN| LV_STATE_DE
 lv_obj_set_style_text_line_space(ui_UraPredmeta8, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
 lv_obj_set_style_text_font(ui_UraPredmeta8, &lv_font_montserrat_14, LV_PART_MAIN| LV_STATE_DEFAULT);
 
+ui_lessonBox9 = lv_obj_create(ui_timetableContainer);
+lv_obj_remove_style_all(ui_lessonBox9);
+lv_obj_set_height( ui_lessonBox9, 100);
+lv_obj_set_width( ui_lessonBox9, lv_pct(100));
+lv_obj_set_x( ui_lessonBox9, -186 );
+lv_obj_set_y( ui_lessonBox9, -325 );
+lv_obj_set_flex_flow(ui_lessonBox9,LV_FLEX_FLOW_ROW);
+lv_obj_set_flex_align(ui_lessonBox9, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+lv_obj_remove_flag( ui_lessonBox9, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_bg_color(ui_lessonBox9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_opa(ui_lessonBox9, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_left(ui_lessonBox9, 25, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_right(ui_lessonBox9, 25, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_top(ui_lessonBox9, 25, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_bottom(ui_lessonBox9, 25, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_infoContainer10 = lv_obj_create(ui_lessonBox9);
+lv_obj_remove_style_all(ui_infoContainer10);
+lv_obj_set_width( ui_infoContainer10, 200);
+lv_obj_set_height( ui_infoContainer10, 70);
+lv_obj_set_align( ui_infoContainer10, LV_ALIGN_CENTER );
+lv_obj_set_flex_flow(ui_infoContainer10,LV_FLEX_FLOW_ROW);
+lv_obj_set_flex_align(ui_infoContainer10, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+lv_obj_remove_flag( ui_infoContainer10, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+
+ui_circle10 = lv_obj_create(ui_infoContainer10);
+lv_obj_remove_style_all(ui_circle10);
+lv_obj_set_width( ui_circle10, 40);
+lv_obj_set_height( ui_circle10, 40);
+lv_obj_set_x( ui_circle10, -20 );
+lv_obj_set_y( ui_circle10, 0 );
+lv_obj_set_align( ui_circle10, LV_ALIGN_CENTER );
+lv_obj_add_state( ui_circle10, LV_STATE_CHECKED );     /// States
+lv_obj_remove_flag( ui_circle10, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_radius(ui_circle10, 1000, LV_PART_MAIN| LV_STATE_DEFAULT);
+ui_object_set_themeable_style_property(ui_circle10, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_BG_COLOR, _ui_theme_color_red);
+ui_object_set_themeable_style_property(ui_circle10, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_BG_OPA, _ui_theme_alpha_red);
+
+ui_StUre9 = lv_label_create(ui_circle10);
+lv_obj_set_width( ui_StUre9, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_StUre9, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_StUre9, LV_ALIGN_CENTER );
+lv_label_set_text(ui_StUre9,"9");
+lv_obj_set_style_text_color(ui_StUre9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_text_opa(ui_StUre9, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_font(ui_StUre9, &ui_font_h3, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_moreInfoContainer10 = lv_obj_create(ui_infoContainer10);
+lv_obj_remove_style_all(ui_moreInfoContainer10);
+lv_obj_set_width( ui_moreInfoContainer10, 127);
+lv_obj_set_height( ui_moreInfoContainer10, 65);
+lv_obj_set_align( ui_moreInfoContainer10, LV_ALIGN_CENTER );
+lv_obj_set_flex_flow(ui_moreInfoContainer10,LV_FLEX_FLOW_COLUMN);
+lv_obj_set_flex_align(ui_moreInfoContainer10, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+lv_obj_remove_flag( ui_moreInfoContainer10, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_pad_row(ui_moreInfoContainer10, 8, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_column(ui_moreInfoContainer10, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_topInfo10 = lv_obj_create(ui_moreInfoContainer10);
+lv_obj_remove_style_all(ui_topInfo10);
+lv_obj_set_height( ui_topInfo10, 34);
+lv_obj_set_width( ui_topInfo10, lv_pct(123));
+lv_obj_set_align( ui_topInfo10, LV_ALIGN_CENTER );
+lv_obj_set_flex_flow(ui_topInfo10,LV_FLEX_FLOW_ROW);
+lv_obj_set_flex_align(ui_topInfo10, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+lv_obj_remove_flag( ui_topInfo10, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_pad_row(ui_topInfo10, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_column(ui_topInfo10, 10, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_Predmet9 = lv_label_create(ui_topInfo10);
+lv_obj_set_width( ui_Predmet9, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Predmet9, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_Predmet9, LV_ALIGN_CENTER );
+lv_label_set_text(ui_Predmet9,"SLO");
+ui_object_set_themeable_style_property(ui_Predmet9, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR, _ui_theme_color_red);
+ui_object_set_themeable_style_property(ui_Predmet9, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA, _ui_theme_alpha_red);
+lv_obj_set_style_text_font(ui_Predmet9, &ui_font_h3, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_Container19 = lv_obj_create(ui_topInfo10);
+lv_obj_remove_style_all(ui_Container19);
+lv_obj_set_width( ui_Container19, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Container19, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_Container19, LV_ALIGN_CENTER );
+lv_obj_remove_flag( ui_Container19, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_radius(ui_Container19, 10, LV_PART_MAIN| LV_STATE_DEFAULT);
+ui_object_set_themeable_style_property(ui_Container19, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_BG_COLOR, _ui_theme_color_red);
+ui_object_set_themeable_style_property(ui_Container19, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_BG_OPA, _ui_theme_alpha_red);
+lv_obj_set_style_pad_left(ui_Container19, 7, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_right(ui_Container19, 7, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_top(ui_Container19, 5, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_pad_bottom(ui_Container19, 5, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_color(ui_Container19, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_text_opa(ui_Container19, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_Razred9 = lv_label_create(ui_Container19);
+lv_obj_set_width( ui_Razred9, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Razred9, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_Razred9, LV_ALIGN_CENTER );
+lv_label_set_text(ui_Razred9,"G3A");
+lv_obj_set_style_text_color(ui_Razred9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_text_opa(ui_Razred9, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_font(ui_Razred9, &ui_font_P1, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_Profesor9 = lv_label_create(ui_moreInfoContainer10);
+lv_obj_set_width( ui_Profesor9, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Profesor9, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_Profesor9, LV_ALIGN_CENTER );
+lv_label_set_text(ui_Profesor9,"Aleš Volčini");
+ui_object_set_themeable_style_property(ui_Profesor9, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR, _ui_theme_color_teacherGray);
+ui_object_set_themeable_style_property(ui_Profesor9, LV_PART_MAIN| LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA, _ui_theme_alpha_teacherGray);
+lv_obj_set_style_text_font(ui_Profesor9, &ui_font_p, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_Container20 = lv_obj_create(ui_lessonBox9);
+lv_obj_remove_style_all(ui_Container20);
+lv_obj_set_width( ui_Container20, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_Container20, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_Container20, LV_ALIGN_CENTER );
+lv_obj_remove_flag( ui_Container20, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+
+ui_UraPredmeta9 = lv_label_create(ui_Container20);
+lv_obj_set_width( ui_UraPredmeta9, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_UraPredmeta9, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_UraPredmeta9, LV_ALIGN_CENTER );
+lv_label_set_text(ui_UraPredmeta9,"14:25 - 15:10");
+lv_obj_set_style_text_letter_space(ui_UraPredmeta9, 2, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_line_space(ui_UraPredmeta9, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_font(ui_UraPredmeta9, &lv_font_montserrat_14, LV_PART_MAIN| LV_STATE_DEFAULT);
+
 }
 
 void ui_main_screen_destroy(void)
@@ -1387,5 +1515,17 @@ ui_Razred8= NULL;
 ui_Profesor8= NULL;
 ui_Container18= NULL;
 ui_UraPredmeta8= NULL;
+ui_lessonBox9= NULL;
+ui_infoContainer10= NULL;
+ui_circle10= NULL;
+ui_StUre9= NULL;
+ui_moreInfoContainer10= NULL;
+ui_topInfo10= NULL;
+ui_Predmet9= NULL;
+ui_Container19= NULL;
+ui_Razred9= NULL;
+ui_Profesor9= NULL;
+ui_Container20= NULL;
+ui_UraPredmeta9= NULL;
 
 }

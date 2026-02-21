@@ -129,6 +129,18 @@ extern lv_obj_t *ui_Razred8;
 extern lv_obj_t *ui_Profesor8;
 extern lv_obj_t *ui_Container18;
 extern lv_obj_t *ui_UraPredmeta8;
+extern lv_obj_t *ui_lessonBox9;
+extern lv_obj_t *ui_infoContainer10;
+extern lv_obj_t *ui_circle10;
+extern lv_obj_t *ui_StUre9;
+extern lv_obj_t *ui_moreInfoContainer10;
+extern lv_obj_t *ui_topInfo10;
+extern lv_obj_t *ui_Predmet9;
+extern lv_obj_t *ui_Container19;
+extern lv_obj_t *ui_Razred9;
+extern lv_obj_t *ui_Profesor9;
+extern lv_obj_t *ui_Container20;
+extern lv_obj_t *ui_UraPredmeta9;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

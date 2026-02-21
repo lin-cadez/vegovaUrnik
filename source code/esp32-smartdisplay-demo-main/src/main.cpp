@@ -9,7 +9,7 @@
 const char *ssid = "Wi Believe I Can Fi";
 const char *password = "mohar1aa";
 const char *st_ucilnice = "115";
-// String serverName = "http://nether.mojvegovc.si:3000";
+//String serverName = "http://nether.mojvegovc.si:3000";
 String serverName = "http://192.168.50.104:3000";
 
 const char *ntpServer = "de.pool.ntp.org";
@@ -77,10 +77,15 @@ void updateTimeFromRTC();
 void syncUiState();
 void syncAndUpdateTime();
 
+static int32_t autoScrollPos = 0;
+static bool autoScrollDown = true;
+static uint32_t lastAutoScroll = 0;
+static uint32_t touchPauseUntil = 0;
+
 void setup()
 {
   Serial.begin(115200);
-  Serial.setDebugOutput(true);
+  //Serial.setDebugOutput(true);
 
   // Basic board info
   log_i("Board: %s", BOARD_NAME);
@@ -211,24 +216,22 @@ void refreshDisplFunction(void *param)
       updateUrnik();
       lastUrnikRefresh = now;
       lv_obj_clear_flag(lv_scr_act(), LV_OBJ_FLAG_SCROLLABLE);
-
-      // Nastavi container pravilno
       lv_obj_set_scrollbar_mode(ui_timetableContainer, LV_SCROLLBAR_MODE_OFF);
       lv_obj_set_scroll_snap_y(ui_timetableContainer, LV_SCROLL_SNAP_NONE);
       lv_obj_clear_flag(ui_timetableContainer, LV_OBJ_FLAG_SCROLL_ELASTIC);
-
-      // KLJUČNO: nastavi scroll throw da je bolj odziven
       lv_obj_set_style_anim_time(lv_scr_act(), 200, 0);
+      autoScrollPos = 0;
+      touchPauseUntil = 0;
     }
 
     if (lv_scr_act() != ui_startup)
     {
-      // Update clock every second
       if (now - lastClockUpdate >= 1000)
       {
         syncAndUpdateTime();
         lastClockUpdate = now;
       }
+
       bool needsUpdate = false;
       xSemaphoreTake(dataMutex, portMAX_DELAY);
       needsUpdate = appState.dirty;
@@ -238,18 +241,52 @@ void refreshDisplFunction(void *param)
         syncUiState();
         updateUrnik();
       }
-      // Refresh timetable every 30 minutes
-      if (now - lastUrnikRefresh >= 1UL * 10UL * 1000UL)
+
+      if (now - lastUrnikRefresh >= 30UL * 60UL * 1000UL)
       {
-        Serial.println("Time to refresh urnik");
         syncUiState();
         syncAndUpdateTime();
         updateUrnik();
         lastUrnikRefresh = now;
       }
+
+      // Če user scrollata — pauzaj auto-scroll za 5 sekund
+      if (isScrolling)
+      {
+        autoScrollPos = lv_obj_get_scroll_y(ui_timetableContainer);
+        touchPauseUntil = now + 5000;
+      }
+
+      // Auto-scroll — samo če ni pauziran in user ne scrollata
+      if (!isScrolling && now > touchPauseUntil && now - lastAutoScroll >= 1)
+      {
+        int32_t maxScroll = lv_obj_get_scroll_bottom(ui_timetableContainer);
+
+        if (autoScrollDown)
+        {
+          autoScrollPos +=5;
+          if (autoScrollPos >= maxScroll)
+          {
+            autoScrollPos = maxScroll;
+            autoScrollDown = false;
+          }
+        }
+        else
+        {
+          autoScrollPos -= 5;
+          if (autoScrollPos <= 0)
+          {
+            autoScrollPos = 0;
+            autoScrollDown = true;
+          }
+        }
+
+        lv_obj_scroll_to_y(ui_timetableContainer, autoScrollPos, LV_ANIM_OFF);
+        lastAutoScroll = now;
+      }
     }
 
-    vTaskDelay(isScrolling ? pdMS_TO_TICKS(5) : pdMS_TO_TICKS(20));
+    vTaskDelay(isScrolling ? pdMS_TO_TICKS(1) : pdMS_TO_TICKS(5));
   }
 }
 
